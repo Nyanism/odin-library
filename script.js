@@ -21,70 +21,70 @@ class Book {
   static addBookToLibrary(newBook) {
     myLibrary.push(newBook);
   }
-}
 
-function showLibraryBooks() {
-  let bookRows = document.querySelectorAll(".book-row");
-  bookRows.forEach((row) => {
-    row.remove();
-  });
-
-  for (book of myLibrary) {
-    let tableRow = document.querySelector("table").insertRow();
-    tableRow.classList.add("book-row");
-
-    let titleCell = tableRow.insertCell();
-    titleCell.textContent = book.title;
-
-    let authorCell = tableRow.insertCell();
-    authorCell.textContent = book.author;
-
-    let pagesCell = tableRow.insertCell();
-    pagesCell.textContent = book.pages;
-
-    let readCell = tableRow.insertCell();
-    if (book.hasRead) {
-      readCell.textContent = "Yes";
-    } else {
-      readCell.textContent = "No";
+  static showLibraryBooks() {
+    let bookRows = document.querySelectorAll(".book-row");
+    bookRows.forEach((row) => {
+      row.remove();
+    });
+  
+    for (let book of myLibrary) {
+      let tableRow = document.querySelector("table").insertRow();
+      tableRow.classList.add("book-row");
+  
+      let titleCell = tableRow.insertCell();
+      titleCell.textContent = book.title;
+  
+      let authorCell = tableRow.insertCell();
+      authorCell.textContent = book.author;
+  
+      let pagesCell = tableRow.insertCell();
+      pagesCell.textContent = book.pages;
+  
+      let readCell = tableRow.insertCell();
+      if (book.hasRead) {
+        readCell.textContent = "Yes";
+      } else {
+        readCell.textContent = "No";
+      }
+  
+      let deleteCell = tableRow.insertCell();
+      let deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.classList.add("delete");
+      deleteButton.setAttribute("data-index", myLibrary.indexOf(book));
+      deleteCell.appendChild(deleteButton);
+  
+      let readButtonCell = tableRow.insertCell();
+      let readButton = document.createElement("button");
+      readButton.textContent = "Toggle Read";
+      readButton.classList.add("toggle");
+      readButton.setAttribute("data-index", myLibrary.indexOf(book));
+      readButtonCell.appendChild(readButton);
     }
-
-    let deleteCell = tableRow.insertCell();
-    let deleteButton = document.createElement("button");
-    deleteButton.textContent = "Delete";
-    deleteButton.classList.add("delete");
-    deleteButton.setAttribute("data-index", myLibrary.indexOf(book));
-    deleteCell.appendChild(deleteButton);
-
-    let readButtonCell = tableRow.insertCell();
-    let readButton = document.createElement("button");
-    readButton.textContent = "Toggle Read";
-    readButton.classList.add("toggle");
-    readButton.setAttribute("data-index", myLibrary.indexOf(book));
-    readButtonCell.appendChild(readButton);
+  
+    let bookDeleteButtons = document.querySelectorAll(".delete");
+      bookDeleteButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          myLibrary.splice(button.dataset.index, 1);
+          Book.showLibraryBooks();
+        });
+      });
+  
+      let readToggleButtons = document.querySelectorAll(".toggle");
+      readToggleButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          let book = myLibrary[button.dataset.index];
+          if (book.hasRead) {
+            book.hasRead = false;
+          } else {
+            book.hasRead = true;
+          }
+  
+          Book.showLibraryBooks();
+        });
+      });
   }
-
-  let bookDeleteButtons = document.querySelectorAll(".delete");
-    bookDeleteButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        myLibrary.splice(button.dataset.index, 1);
-        showLibraryBooks();
-      });
-    });
-
-    let readToggleButtons = document.querySelectorAll(".toggle");
-    readToggleButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        let book = myLibrary[button.dataset.index];
-        if (book.hasRead) {
-          book.hasRead = false;
-        } else {
-          book.hasRead = true;
-        }
-
-        showLibraryBooks();
-      });
-    });
 }
 
 document.querySelector(".book-form").style.display = "none";
@@ -139,7 +139,7 @@ submitBookButton.addEventListener("click", () => {
   readButton.setAttribute("data-index", myLibrary.indexOf(book));
   readButtonCell.appendChild(readButton);
 
-  showLibraryBooks();
+  Book.showLibraryBooks();
 
   document.querySelector(".book-form").reset();
 });
@@ -148,4 +148,4 @@ let book1 = new Book("Title 1", "Author 1", 40, true);
 let book2 = new Book("Title 2", "Author 2", 50, false);
 Book.addBookToLibrary(book1);
 Book.addBookToLibrary(book2);
-showLibraryBooks();
+Book.showLibraryBooks();
