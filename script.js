@@ -17,10 +17,10 @@ class Book {
 
     return title + " by " + author + ", " + pages + " pages, " + read;
   }
-}
 
-function addBookToLibrary(newBook) {
-  myLibrary.push(newBook);
+  static addBookToLibrary(newBook) {
+    myLibrary.push(newBook);
+  }
 }
 
 function showLibraryBooks() {
@@ -100,11 +100,11 @@ submitBookButton.addEventListener("click", () => {
   let pages = document.querySelector("#pages").value;
   let hasRead = false;
   if (document.querySelector("#hasRead").value === "Yes") {
-    let hasRead = true;
+    hasRead = true;
   }
 
   let book = new Book(title, author, pages, hasRead);
-  addBookToLibrary(book);
+  Book.addBookToLibrary(book);
 
   let tableRow = document.querySelector("table").insertRow();
   tableRow.classList.add("book-row");
@@ -146,6 +146,6 @@ submitBookButton.addEventListener("click", () => {
 
 let book1 = new Book("Title 1", "Author 1", 40, true);
 let book2 = new Book("Title 2", "Author 2", 50, false);
-addBookToLibrary(book1);
-addBookToLibrary(book2);
+Book.addBookToLibrary(book1);
+Book.addBookToLibrary(book2);
 showLibraryBooks();
